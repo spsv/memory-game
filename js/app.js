@@ -36,6 +36,7 @@ let card1, card2, card3, card4;
 let moves = 0;
 let matches = 0;
 let rating = 3;
+let timer;
 
 /**
  * @description shuffle the cards
@@ -81,6 +82,7 @@ function createCards() {
  */
 function findCards() {
   $(".card").on("click", function() {
+    // startTime();
     if ($(this).hasClass("open show")) {
       return;
     }
@@ -114,10 +116,13 @@ function findCards() {
  */
 function resetGame() {
   // Show cards on click
+
   $(".restart").on("click", function() {
+    clearInterval(timer);
     matches = 0;
     resetStars();
     init();
+    startTime();
   });
 }
 
@@ -139,6 +144,7 @@ function verifyCards(card3, card4) {
         gameOver();
       }, 1000);
     }
+
   } else {
     card1.addClass("shake");
     card2.addClass("shake");
@@ -172,9 +178,11 @@ function defineStars() {
  * @return void
  */
 function gameOver() {
+  clearInterval(timer);
   alert("Congratulations. You did "+moves+" moves. "+"Your score was "+rating+" stars");
   resetStars();
   init();
+  startTime();
 }
 
 /**
@@ -199,9 +207,29 @@ function resetStars() {
   $("#star3").removeClass("close");
   $("#star2").addClass("open");
   $("#star3").addClass("open");
+  $('.minutes').html("00");
+  $('.seconds').html('00');
 }
 
+// Start timer on the first card click
+function startTime() {
+   let clicks = 0;
+   $(".card").on("click", function() {
+     clicks += 1;
+     if (clicks == 1 ) {
+      var sec = 0;
+      function time ( val ) { return val > 9 ? val : "0" + val; }
+      timer = setInterval( function(){
+        $(".seconds").html(time(++sec % 60));
+        $(".minutes").html(time(parseInt(sec / 60, 10)));
+      }, 1000);
+     }
+   });
+ }
+
+
 init();
+startTime();
 resetGame();
 
 /*
