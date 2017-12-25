@@ -211,12 +211,17 @@ function resetStars() {
   $('.seconds').html('00');
 }
 
-// Start timer on the first card click
+/**
+ * @description starts the timer
+ * @param {} - none
+ * @return void
+ */
+
 function startTime() {
-   let clicks = 0;
+   let numberclicks = 0;
    $(".card").on("click", function() {
-     clicks += 1;
-     if (clicks == 1 ) {
+     numberclicks += 1;
+     if (numberclicks == 1 ) {
       var sec = 0;
       function time ( val ) { return val > 9 ? val : "0" + val; }
       timer = setInterval( function(){
